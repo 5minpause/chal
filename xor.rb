@@ -16,17 +16,43 @@ end
 
 def decipher_with_xor(cipher, key)
     result = []
-    b = key.to_s.unpack('H*').to_s.hex
+    b = key.to_s.unpack('H*')[0].hex
     key_length = b.to_s.length
 
     if cipher.class != Array
-        cipher = cipher.to_s.chars.to_a
+        cipher = cipher.to_s.chars
     end
 
     cipher.each_slice(key_length) do |bit|
-        result << ( bit.join.hex ^ b ).to_s(16) 
+        result << ( bit.join.hex ^ b ).to_s(16)
     end
+
     text = [result.join].pack('H*')
-    t = text.unpack('H*')
-    [t.join].pack('H*')        
+    
+    # these last two lines encrypt and decrypt result.join again
+    # so they are unneccessary
+
+    # t = text.unpack('H*')
+    # [t.join].pack('H*')
+end
+
+def encipher_with_xor(input, key)
+    result = []
+
+    if key.length < input.length
+      div, mod = input.length.divmod(key.length)
+      key = key * div + key[0, mod]
+    end
+
+    key = key.to_s.unpack('H*')[0].hex
+    key_length = key.to_s.length
+
+    hex_input = input.unpack('H*')[0]
+
+    hex_input.chars.each_slice(key_length) do |slice|
+      intermediate = (slice.join.hex ^ key)
+      result << intermediate.to_s(16)
+    end
+
+    return result.join
 end
