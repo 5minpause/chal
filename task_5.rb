@@ -1,8 +1,10 @@
 require_relative 'xor'
 
 # INPUT
-input = "Burning 'em, if you ain't quick and nimble I go crazy when I hear a cymbal"
+# input = " Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
 # input = "Cooking MC's like a pound of bacon"
+
+input = " Burning 'em, if you ain't quick and nimble\n I go crazy when I hear a cymbal\n"
 
 # KEY
 key = "ICE"
@@ -12,8 +14,8 @@ expected_result = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a262
 
 en = encipher_with_xor(input, key)
 
-de = decipher_with_xor(en, key)
-puts de
+# de = decipher_with_xor(en, key)
+# puts de
 if expected_result == en
 	puts "YES"
 else

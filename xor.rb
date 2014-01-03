@@ -39,18 +39,25 @@ end
 def encipher_with_xor(input, key)
     result = []
 
-    if key.length < input.length
-      div, mod = input.length.divmod(key.length)
-      key = key * div + key[0, mod]
-    end
-
     key = key.to_s.unpack('H*')[0].hex
     key_length = key.to_s.length
 
-    hex_input = input.unpack('H*')[0]
+    # if key_length < input.length
+    #   div, mod = input.length.divmod(key_length)
+    #   key = key * div + key[0, mod]
+    # end
 
+    hex_input = input.unpack('H*')[0]
+puts key
     hex_input.chars.each_slice(key_length) do |slice|
-      intermediate = (slice.join.hex ^ key)
+      # puts "#{slice.join.hex}".length
+      if key_length < "#{slice.join.hex}".length
+        div, mod = "#{slice.join.hex}".length.divmod(key_length)
+        actual_key = key * div + key[0, mod]
+      else
+        actual_key = key
+      end
+      intermediate = (slice.join.hex ^ actual_key)
       result << intermediate.to_s(16)
     end
 
